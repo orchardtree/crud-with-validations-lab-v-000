@@ -1,4 +1,5 @@
 class SongsController < ApplicationController
+  before_action :require_login
 
   def index
     @songs = Song.all
@@ -46,5 +47,9 @@ class SongsController < ApplicationController
 
   def song_params(*args)
     params.require(:song).permit(*args)
+  end
+
+  def require_login
+    return head(:forbidden) unless session.include? :user_id
   end
 end
